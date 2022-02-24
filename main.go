@@ -25,7 +25,6 @@ func main() {
 	checkdb()
 
 	http.HandleFunc("/news", newsHandler)
-	http.HandleFunc("/headers", headersHandler)
 
 	err := http.ListenAndServe(":8080", nil)
 	abortif(err != nil, "failed to start http server: %v", err)
@@ -46,7 +45,6 @@ func newsHandler(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	var news []newsDetail
-
 	var query = "SELECT title,body from news"
 
 	filters, ok := r.URL.Query()["filter"]
@@ -119,20 +117,9 @@ func httpError(w http.ResponseWriter, format string, args ...interface{}) {
 	log.Printf("error: "+format, args...)
 }
 
-func headersHandler(w http.ResponseWriter, req *http.Request) {
-	for name, headers := range req.Header {
-		for _, h := range headers {
-			fmt.Fprintf(w, "%v: %v\n", name, h)
-		}
-	}
-}
-
 func getenv(name string) string {
 	val := os.Getenv(name)
 	abortif(val == "", "env %s does not exists or is empty", name)
-	if val == "" {
-		os.Exit(1)
-	}
 	return val
 }
 
@@ -155,7 +142,7 @@ func checkdb() {
 	db, err := sql.Open("mysql", dbconn())
 	abortif(err != nil, "failed to open db connection: %v", err)
 
-	defer db.Close()
+	db.Close()
 }
 
 var sprintf = fmt.Sprintf
