@@ -46,7 +46,7 @@ dbtest: ## test db connectivity
 
 .PHONY: build
 build: ## build sqli
-	go build
+	go build -o ./sqli-play
 
 
 .PHONY: up
@@ -58,7 +58,7 @@ run: build ## run
 	DBUSER=$(DOCKER_DBUSER)                                                    \
 	DBPASS=$(DOCKER_DBPASS)                                                    \
 	DBADDR=$(DOCKER_DBADDR)                                                    \
-	./sqli
+	./sqli-play
 
 
 .PHONY: help
