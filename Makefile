@@ -44,6 +44,7 @@ dbtest: ## test db connectivity
 		-u$(DOCKER_DBUSER) -p$(DOCKER_DBPASS) -D $(DOCKER_DBNAME)              \
 		-e "show status;" >/dev/null
 
+
 .PHONY: build
 build: ## build sqli
 	go build -o ./sqli-play
@@ -51,6 +52,7 @@ build: ## build sqli
 
 .PHONY: up
 up: db run ## build, setup db and start sqli service.
+
 
 .PHONY: run
 run: build ## run
